@@ -12,6 +12,6 @@ module.exports = async function (sock, chatId) {
         await sock.sendMessage(chatId, { text: newsMessage });
     } catch (error) {
         console.error('Error fetching news:', error);
-        await sock.sendMessage(chatId, { text: 'Sorry, I could not fetch news right now.' });
+        await sock.sendMessage(chatId, { text: 'Sorry, I cannot fetch news right now.' });
     }
 };
