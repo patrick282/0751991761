@@ -78,14 +78,16 @@ global.author = settings.author;
 global.channelLink = "";
 global.ytch = "Mr Patrick Alunya";
 
+// Update greetings message auto reply
+
 // Add this near the top of main.js with other global configurations
 const channelInfo = {
     contextInfo: {
         forwardingScore: 999,
-        isForwarded: true,
+        isForwarded: false,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            // newsletterJid: '120363161513685998@newsletter',
+            newsletterName: 'Patrick`s VA',
             serverMessageId: -1
         }
     }
@@ -132,13 +134,37 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         // Removed auto response message for group chats
         // Basic message response in private chat
-        // if (!isGroup && (userMessage === 'hi' || userMessage === 'hello' || userMessage === 'bot' || userMessage === 'hlo' || userMessage === 'hey' || userMessage === 'bro')) {
-        //     await sock.sendMessage(chatId, {
-        //         text: 'Hi, How can I help you?\nYou can use .menu for more info and commands.',
-        //         ...channelInfo
-        //     });
-        //     return;
-        // }
+        if (!isGroup && (userMessage === 'hi' || userMessage === 'hello' || userMessage === 'bot' || userMessage === 'hlo' || userMessage === 'hey' || userMessage === 'heyyy' || userMessage === 'bro' || userMessage === 'patoo' || userMessage === 'Patoooo')) {
+            await sock.sendMessage(chatId, {
+                text: 'Yes, Hello.',
+                ...channelInfo
+            });
+            return;
+        }
+
+        if (!isGroup && (userMessage === 'yoo' || userMessage === 'mkuu' || userMessage === 'rada' || userMessage === 'We mzee' || userMessage === 'yoh')) {
+            await sock.sendMessage(chatId, {
+                text: 'Yoh mkuu, niaje.',
+                ...channelInfo
+            });
+            return;
+        }
+
+        if(!isGroup && (userMessage === 'Good morning')) {
+            await sock.sendMessage(chatId, {
+                text: 'Good morning too, how was your night? Mine was great. I just woke up from a long sleep.',
+                ...channelInfo
+            });
+            return;
+        }
+
+        if(!isGroup && (userMessage === 'How are you??')) {
+            await sock.sendMessage(chatId, {
+                text: 'I am good, just missing you out here. It has been a minute.',
+                ...channelInfo
+            });
+            return;
+        }
 
         if (!message.key.fromMe) incrementMessageCount(chatId, senderId);
 

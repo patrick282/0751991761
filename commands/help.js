@@ -105,8 +105,7 @@ async function helpCommand(sock, chatId, channelLink) {
 ║ ➤ .play <song_name>
 ║ ➤ .song <song_name>
 ╚═══════════════════╝
-
-Join our channel for updates:`;
+`;
 
     try {
         const imagePath = path.join(__dirname, '../assets/bot_image.jpg');
@@ -119,10 +118,10 @@ Join our channel for updates:`;
                 caption: helpMessage,
                 contextInfo: {
                     forwardingScore: 999,
-                    isForwarded: true,
+                    isForwarded: false,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD by Mr Unique Hacker',
+                        // newsletterJid: '120363161513685998@newsletter',
+                        newsletterName: 'Patrick`s VA',
                         serverMessageId: -1
                     }
                 }
@@ -133,12 +132,12 @@ Join our channel for updates:`;
                 text: helpMessage,
                 contextInfo: {
                     forwardingScore: 999,
-                    isForwarded: true,
+                    isForwarded: false,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD by Mr Unique Hacker',
+                        // newsletterJid: '120363161513685998@newsletter',
+                        newsletterName: 'Patrick`s VA',
                         serverMessageId: -1
-                    } 
+                    }
                 }
             });
         }
