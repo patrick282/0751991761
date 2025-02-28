@@ -19,7 +19,7 @@ const configPath = path.join(__dirname, '../data/autoStatus.json');
 
 // Initialize config file if it doesn't exist
 if (!fs.existsSync(configPath)) {
-    fs.writeFileSync(configPath, JSON.stringify({ enabled: false, autoReact: false }));
+    fs.writeFileSync(configPath, JSON.stringify({ enabled: false, autoReact: false, autoTyping: false }));
 }
 
 async function autoStatusCommand(sock, chatId, senderId, args) {
@@ -40,8 +40,9 @@ async function autoStatusCommand(sock, chatId, senderId, args) {
         if (!args || args.length === 0) {
             const status = config.enabled ? 'enabled' : 'disabled';
             const reactStatus = config.autoReact ? 'enabled' : 'disabled';
+            const typingStatus = config.autoTyping ? 'enabled' : 'disabled';
             await sock.sendMessage(chatId, { 
-                text: `🔄 *Auto Status View*\n\nCurrent status: ${status}\nAuto React: ${reactStatus}\n\nUse:\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on - Enable auto react\n.autostatus react off - Disable auto react`,
+                text: `🔄 *Auto Status View*\n\nCurrent status: ${status}\nAuto React: ${reactStatus}\nAuto Typing: ${typingStatus}\n\nUse:\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on - Enable auto react\n.autostatus react off - Disable auto react\n.autostatus typing on - Enable auto typing\n.autostatus typing off - Disable auto typing`,
                 ...channelInfo
             });
             return;
@@ -85,9 +86,31 @@ async function autoStatusCommand(sock, chatId, senderId, args) {
                     ...channelInfo
                 });
             }
+        } else if (command === 'typing') {
+            const typingCommand = args[1]?.toLowerCase();
+            if (typingCommand === 'on') {
+                config.autoTyping = true;
+                fs.writeFileSync(configPath, JSON.stringify(config));
+                await sock.sendMessage(chatId, { 
+                    text: '✅ Auto typing has been enabled!\nBot will now automatically show typing status.',
+                    ...channelInfo
+                });
+            } else if (typingCommand === 'off') {
+                config.autoTyping = false;
+                fs.writeFileSync(configPath, JSON.stringify(config));
+                await sock.sendMessage(chatId, { 
+                    text: '❌ Auto typing has been disabled!\nBot will no longer show typing status automatically.',
+                    ...channelInfo
+                });
+            } else {
+                await sock.sendMessage(chatId, { 
+                    text: '❌ Invalid command! Use:\n.autostatus typing on - Enable auto typing\n.autostatus typing off - Disable auto typing',
+                    ...channelInfo
+                });
+            }
         } else {
             await sock.sendMessage(chatId, { 
-                text: '❌ Invalid command! Use:\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on - Enable auto react\n.autostatus react off - Disable auto react',
+                text: '❌ Invalid command! Use:\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on - Enable auto react\n.autostatus react off - Disable auto react\n.autostatus typing on - Enable auto typing\n.autostatus typing off - Disable auto typing',
                 ...channelInfo
             });
         }
@@ -123,6 +146,17 @@ function isAutoReactEnabled() {
     }
 }
 
+// Function to check if auto typing is enabled
+function isAutoTypingEnabled() {
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath));
+        return config.autoTyping;
+    } catch (error) {
+        console.error('Error checking auto typing config:', error);
+        return false;
+    }
+}
+
 // Function to handle status updates
 async function handleStatusUpdate(sock, status) {
     try {
@@ -147,6 +181,12 @@ async function handleStatusUpdate(sock, status) {
                     if (isAutoReactEnabled()) {
                         await sock.sendMessage(msg.key.remoteJid, { react: { text: '👍', key: msg.key } });
                         console.log(`✅ Reacted to status from: ${sender.split('@')[0]}`);
+                    }
+
+                    // Auto typing if enabled
+                    if (isAutoTypingEnabled()) {
+                        await sock.sendPresenceUpdate('composing', msg.key.remoteJid);
+                        console.log(`✅ Typing status shown for: ${sender.split('@')[0]}`);
                     }
                 } catch (err) {
                     if (err.message?.includes('rate-overlimit')) {
@@ -173,6 +213,12 @@ async function handleStatusUpdate(sock, status) {
                     await sock.sendMessage(status.key.remoteJid, { react: { text: '❤️', key: status.key } });
                     console.log(`✅ Reacted to status from: ${sender.split('@')[0]}`);
                 }
+
+                // Auto typing if enabled
+                if (isAutoTypingEnabled()) {
+                    await sock.sendPresenceUpdate('composing', status.key.remoteJid);
+                    console.log(`✅ Typing status shown for: ${sender.split('@')[0]}`);
+                }
             } catch (err) {
                 if (err.message?.includes('rate-overlimit')) {
                     console.log('⚠️ Rate limit hit, waiting before retrying...');
@@ -197,6 +243,12 @@ async function handleStatusUpdate(sock, status) {
                     await sock.sendMessage(status.reaction.key.remoteJid, { react: { text: '👍', key: status.reaction.key } });
                     console.log(`✅ Reacted to status from: ${sender.split('@')[0]}`);
                 }
+
+                // Auto typing if enabled
+                if (isAutoTypingEnabled()) {
+                    await sock.sendPresenceUpdate('composing', status.reaction.key.remoteJid);
+                    console.log(`✅ Typing status shown for: ${sender.split('@')[0]}`);
+                }
             } catch (err) {
                 if (err.message?.includes('rate-overlimit')) {
                     console.log('⚠️ Rate limit hit, waiting before retrying...');
@@ -216,5 +268,6 @@ async function handleStatusUpdate(sock, status) {
 
 module.exports = {
     autoStatusCommand,
-    handleStatusUpdate
+    handleStatusUpdate,
+    isAutoTypingEnabled
 };

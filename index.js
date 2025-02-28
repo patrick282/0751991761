@@ -44,6 +44,7 @@ const { parsePhoneNumber } = require("libphonenumber-js")
 const { PHONENUMBER_MCC } = require('@whiskeysockets/baileys/lib/Utils/generics')
 const { rmSync, existsSync } = require('fs')
 const { join } = require('path')
+const { giveAdminRole } = require('./commands/adminRoles')
 
 const store = makeInMemoryStore({
     logger: pino().child({
@@ -55,7 +56,7 @@ const store = makeInMemoryStore({
 let phoneNumber = "254751991761"
 let owner = JSON.parse(fs.readFileSync('./database/owner.json'))
 
-global.botname = "KNIGHT BOT"
+global.botname = "Patrick`s VA"
 global.themeemoji = "•"
 
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
@@ -114,12 +115,7 @@ async function startXeonBotInc() {
                         text: '❌ An error occurred while processing your message.',
                         contextInfo: {
                             forwardingScore: 999,
-                            isForwarded: true,
-                            forwardedNewsletterMessageInfo: {
-                                newsletterJid: '120363161513685998@newsletter',
-                                newsletterName: 'KnightBot MD',
-                                serverMessageId: -1
-                            }
+                            isForwarded: false
                         }
                     }).catch(console.error);
                 }
@@ -128,6 +124,18 @@ async function startXeonBotInc() {
             console.error("Error in messages.upsert:", err)
         }
     })
+
+    // Example command handler
+    XeonBotInc.ev.on('messages.upsert', async (m) => {
+        const msg = m.messages[0];
+        const chatId = msg.key.remoteJid;
+        const senderId = msg.key.participant || msg.key.remoteJid;
+        const message = msg.message.conversation || msg.message.extendedTextMessage?.text;
+
+        if (message.startsWith('.admin')) {
+            await giveAdminRole(XeonBotInc, chatId, senderId);
+        }
+    });
 
     // Add these event handlers for better functionality
     XeonBotInc.decodeJid = (jid) => {
@@ -202,12 +210,7 @@ async function startXeonBotInc() {
                 \n Give a Star ⭐ to our bot:\n https://github.com/mruniquehacker/KnightBot-MD\n ✅Make sure to join below channel`,
                 contextInfo: {
                     forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
-                        serverMessageId: -1
-                    }
+                    isForwarded: false
                 }
             });
 
