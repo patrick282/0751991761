@@ -86,13 +86,11 @@ async function handleLinkDetection(sock, chatId, message, userMessage, senderId)
 
     let shouldDelete = false;
 
-    
-    // Update antilinks pattern
     const linkPatterns = {
         whatsappGroup: /chat\.whatsapp\.com\/[A-Za-z0-9]{20,}/,
         whatsappChannel: /wa\.me\/channel\/[A-Za-z0-9]{20,}/,
         telegram: /t\.me\/[A-Za-z0-9_]+/,
-        allLinks: /https?:\/\/[^\s]+/, // Matches all links
+        allLinks: /https?:\/\/[^\s]+/,
     };
 
     // Detect WhatsApp Group links
@@ -100,14 +98,14 @@ async function handleLinkDetection(sock, chatId, message, userMessage, senderId)
         console.log('WhatsApp group link protection is enabled.');
         if (linkPatterns.whatsappGroup.test(userMessage)) {
             console.log('Detected a WhatsApp group link!');
-            shouldDelete = false;
+            shouldDelete = true;
         }
     } else if (antilinkSetting === 'whatsappChannel' && linkPatterns.whatsappChannel.test(userMessage)) {
-        shouldDelete = false;
+        shouldDelete = true;
     } else if (antilinkSetting === 'telegram' && linkPatterns.telegram.test(userMessage)) {
         shouldDelete = true;
     } else if (antilinkSetting === 'allLinks' && linkPatterns.allLinks.test(userMessage)) {
-        shouldDelete = false;
+        shouldDelete = true;
     }
 
     if (shouldDelete) {

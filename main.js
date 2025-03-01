@@ -150,7 +150,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
-        if(!isGroup && (userMessage === 'Good morning')) {
+        if(!isGroup && (userMessage === 'good morning' || userMessage === 'morning')) {
             await sock.sendMessage(chatId, {
                 text: 'Good morning too, how was your night? Mine was great. I just woke up from a long sleep.',
                 ...channelInfo
@@ -158,7 +158,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
-        if(!isGroup && (userMessage === 'How are you??')) {
+        if(!isGroup && (userMessage === 'how are you??')) {
             await sock.sendMessage(chatId, {
                 text: 'I am good, just missing you out here. It has been a minute.',
                 ...channelInfo
