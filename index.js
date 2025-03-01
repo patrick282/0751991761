@@ -10,6 +10,8 @@
  * - Pair Code implementation inspired by TechGod143 & DGXEON
  */
 require('./settings')
+// Start keep-alive server to prevent Replit from sleeping
+require('./keep-alive');
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
 const chalk = require('chalk')
