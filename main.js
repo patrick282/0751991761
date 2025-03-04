@@ -93,10 +93,10 @@ const channelInfo = {
     }
 };
 
-// const greetings = ['hi', 'hello', 'bot', 'hlo', 'hey', 'heyyy', 'bro', 'patoo', 'patoooo'];
-// const casualGreetings = ['yoo', 'mkuu', 'rada', 'we mzee', 'yoh'];
-// const morningGreetings = ['good morning', 'morning'];
-// const howAreYouGreetings = ['how are you??'];
+const greetings = ['hi', 'hello', 'bot', 'hlo', 'hey', 'heyyy', 'bro', 'patoo', 'patoooo'];
+const casualGreetings = ['yoo', 'mkuu', 'rada', 'we mzee', 'yoh'];
+const morningGreetings = ['good morning', 'morning'];
+const howAreYouGreetings = ['how are you??'];
 
 async function handleMessages(sock, messageUpdate, printLog) {
     try {
