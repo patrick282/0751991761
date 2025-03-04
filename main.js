@@ -93,6 +93,11 @@ const channelInfo = {
     }
 };
 
+const greetings = ['hi', 'hello', 'bot', 'hlo', 'hey', 'heyyy', 'bro', 'patoo', 'patoooo'];
+const casualGreetings = ['yoo', 'mkuu', 'rada', 'we mzee', 'yoh'];
+const morningGreetings = ['good morning', 'morning'];
+const howAreYouGreetings = ['how are you??'];
+
 async function handleMessages(sock, messageUpdate, printLog) {
     try {
         const { messages, type } = messageUpdate;
@@ -104,6 +109,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
         const chatId = message.key.remoteJid;
         const senderId = message.key.participant || message.key.remoteJid;
         const isGroup = chatId.endsWith('@g.us');
+
+        // Add this check to ensure the bot does not reply to its own messages
+        if (message.key.fromMe) return;
         
         let userMessage = message.message?.conversation?.trim().toLowerCase() ||
             message.message?.extendedTextMessage?.text?.trim().toLowerCase() || '';
@@ -134,15 +142,15 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         // Removed auto response message for group chats
         // Basic message response in private chat
-        if (!isGroup && (userMessage === 'hi' || userMessage === 'hello' || userMessage === 'bot' || userMessage === 'hlo' || userMessage === 'hey' || userMessage === 'heyyy' || userMessage === 'bro' || userMessage === 'patoo' || userMessage === 'Patoooo')) {
+        if (!isGroup && greetings.includes(userMessage)) {
             await sock.sendMessage(chatId, {
-                text: 'Yes, Hello.',
+                text: 'Hello.',
                 ...channelInfo
             });
             return;
         }
 
-        if (!isGroup && (userMessage === 'yoo' || userMessage === 'mkuu' || userMessage === 'rada' || userMessage === 'We mzee' || userMessage === 'yoh')) {
+        if (!isGroup && casualGreetings.includes(userMessage)) {
             await sock.sendMessage(chatId, {
                 text: 'Yoh mkuu, niaje.',
                 ...channelInfo
@@ -150,17 +158,17 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
-        if(!isGroup && (userMessage === 'good morning' || userMessage === 'morning')) {
+        if (!isGroup && morningGreetings.includes(userMessage)) {
             await sock.sendMessage(chatId, {
-                text: 'Good morning too, how was your night? Mine was great. I just woke up from a long sleep.',
+                text: 'Good morning too. Hope you are fine?',
                 ...channelInfo
             });
             return;
         }
 
-        if(!isGroup && (userMessage === 'how are you??')) {
+        if (!isGroup && howAreYouGreetings.includes(userMessage)) {
             await sock.sendMessage(chatId, {
-                text: 'I am good, just missing you out here. It has been a minute.',
+                text: 'I am doing just fine, what about you?',
                 ...channelInfo
             });
             return;
