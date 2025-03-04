@@ -93,10 +93,10 @@ const channelInfo = {
     }
 };
 
-const greetings = ['hi', 'hello', 'bot', 'hlo', 'hey', 'heyyy', 'bro', 'patoo', 'patoooo'];
-const casualGreetings = ['yoo', 'mkuu', 'rada', 'we mzee', 'yoh'];
-const morningGreetings = ['good morning', 'morning'];
-const howAreYouGreetings = ['how are you??'];
+// const greetings = ['hi', 'hello', 'bot', 'hlo', 'hey', 'heyyy', 'bro', 'patoo', 'patoooo'];
+// const casualGreetings = ['yoo', 'mkuu', 'rada', 'we mzee', 'yoh'];
+// const morningGreetings = ['good morning', 'morning'];
+// const howAreYouGreetings = ['how are you??'];
 
 async function handleMessages(sock, messageUpdate, printLog) {
     try {
@@ -142,37 +142,37 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         // Removed auto response message for group chats
         // Basic message response in private chat
-        if (!isGroup && greetings.includes(userMessage)) {
-            await sock.sendMessage(chatId, {
-                text: 'Hello.',
-                ...channelInfo
-            });
-            return;
-        }
+        // if (!isGroup && greetings.includes(userMessage)) {
+        //     await sock.sendMessage(chatId, {
+        //         text: 'Hello.',
+        //         ...channelInfo
+        //     });
+        //     return;
+        // }
 
-        if (!isGroup && casualGreetings.includes(userMessage)) {
-            await sock.sendMessage(chatId, {
-                text: 'Yoh mkuu, niaje.',
-                ...channelInfo
-            });
-            return;
-        }
+        // if (!isGroup && casualGreetings.includes(userMessage)) {
+        //     await sock.sendMessage(chatId, {
+        //         text: 'Yoh mkuu, niaje.',
+        //         ...channelInfo
+        //     });
+        //     return;
+        // }
 
-        if (!isGroup && morningGreetings.includes(userMessage)) {
-            await sock.sendMessage(chatId, {
-                text: 'Good morning too. Hope you are fine?',
-                ...channelInfo
-            });
-            return;
-        }
+        // if (!isGroup && morningGreetings.includes(userMessage)) {
+        //     await sock.sendMessage(chatId, {
+        //         text: 'Good morning too. Hope you are fine?',
+        //         ...channelInfo
+        //     });
+        //     return;
+        // }
 
-        if (!isGroup && howAreYouGreetings.includes(userMessage)) {
-            await sock.sendMessage(chatId, {
-                text: 'I am doing just fine, what about you?',
-                ...channelInfo
-            });
-            return;
-        }
+        // if (!isGroup && howAreYouGreetings.includes(userMessage)) {
+        //     await sock.sendMessage(chatId, {
+        //         text: 'I am doing just fine, what about you?',
+        //         ...channelInfo
+        //     });
+        //     return;
+        // }
 
         if (!message.key.fromMe) incrementMessageCount(chatId, senderId);
 
