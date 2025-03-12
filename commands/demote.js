@@ -101,52 +101,52 @@ async function demoteCommand(sock, chatId, mentionedJids, message) {
 }
 
 // Function to handle automatic demotion detection
-// async function handleDemotionEvent(sock, groupId, participants, author) {
-//     try {
-//         if (!groupId || !participants) {
-//             console.log('Invalid groupId or participants:', { groupId, participants });
-//             return;
-//         }
+async function handleDemotionEvent(sock, groupId, participants, author) {
+    try {
+        if (!groupId || !participants) {
+            console.log('Invalid groupId or participants:', { groupId, participants });
+            return;
+        }
 
-//         // Add delay to avoid rate limiting
-//         await new Promise(resolve => setTimeout(resolve, 1000));
+        // Add delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-//         // Get usernames for demoted participants
-//         const demotedUsernames = await Promise.all(participants.map(async jid => {
-//             return `@${jid.split('@')[0]}`;
-//         }));
+        // Get usernames for demoted participants
+        const demotedUsernames = await Promise.all(participants.map(async jid => {
+            return `@${jid.split('@')[0]}`;
+        }));
 
-//         let demotedBy;
-//         let mentionList = [...participants];
+        let demotedBy;
+        let mentionList = [...participants];
 
-//         if (author && author.length > 0) {
-//             // Ensure author has the correct format
-//             const authorJid = author;
-//             demotedBy = `@${authorJid.split('@')[0]}`;
-//             mentionList.push(authorJid);
-//         } else {
-//             demotedBy = 'System';
-//         }
+        if (author && author.length > 0) {
+            // Ensure author has the correct format
+            const authorJid = author;
+            demotedBy = `@${authorJid.split('@')[0]}`;
+            mentionList.push(authorJid);
+        } else {
+            demotedBy = 'System';
+        }
 
-//         // Add delay to avoid rate limiting
-//         await new Promise(resolve => setTimeout(resolve, 1000));
+        // Add delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-//         const demotionMessage = `*『 GROUP DEMOTION 』*\n\n` +
-//             `👤 *Demoted User${participants.length > 1 ? 's' : ''}:*\n` +
-//             `${demotedUsernames.map(name => `• ${name}`).join('\n')}\n\n` +
-//             `👑 *Demoted By:* ${demotedBy}\n\n` +
-//             `📅 *Date:* ${new Date().toLocaleString()}`;
+        const demotionMessage = `*『 GROUP DEMOTION 』*\n\n` +
+            `👤 *Demoted User${participants.length > 1 ? 's' : ''}:*\n` +
+            `${demotedUsernames.map(name => `• ${name}`).join('\n')}\n\n` +
+            `👑 *Demoted By:* ${demotedBy}\n\n` +
+            `📅 *Date:* ${new Date().toLocaleString()}`;
         
-//         await sock.sendMessage(groupId, {
-//             text: demotionMessage,
-//             mentions: mentionList
-//         });
-//     } catch (error) {
-//         console.error('Error handling demotion event:', error);
-//         if (error.data === 429) {
-//             await new Promise(resolve => setTimeout(resolve, 2000));
-//         }
-//     }
-// }
+        await sock.sendMessage(groupId, {
+            text: demotionMessage,
+            mentions: mentionList
+        });
+    } catch (error) {
+        console.error('Error handling demotion event:', error);
+        if (error.data === 429) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    }
+}
 
 module.exports = { demoteCommand, handleDemotionEvent };

@@ -707,11 +707,11 @@ module.exports = {
             author
         });  // Add this debug log
         
-        if (action === 'promote') {
-            await handlePromotionEvent(sock, id, participants, author);
-        } else if (action === 'demote') {
-            await handleDemotionEvent(sock, id, participants, author);
-        }
+        // if (action === 'promote') {
+        //     await handlePromotionEvent(sock, id, participants, author);
+        // } else if (action === 'demote') {
+        //     await handleDemotionEvent(sock, id, participants, author);
+        // }
     },
     handleStatus: async (sock, status) => {
         await handleStatusUpdate(sock, status);
