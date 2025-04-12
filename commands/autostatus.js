@@ -98,7 +98,7 @@ async function handleStatusUpdate(sock, status) {
         }
 
         // Add delay to prevent rate limiting
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
         // Handle status from messages.upsert
         if (status.messages && status.messages.length > 0) {
